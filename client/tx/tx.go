@@ -128,8 +128,6 @@ func BroadcastTx(clientCtx client.Context, txf Factory, msgs ...sdk.Msg) error {
 		}
 	}
 
-	tx.SetFeeGranter(clientCtx.GetFeeGranterAddress())
-	tx.SetFeePayer(clientCtx.GetFeePayerAddress())
 	err = Sign(txf, clientCtx.GetFromName(), tx, true)
 	if err != nil {
 		return err
@@ -255,6 +253,8 @@ func BuildUnsignedTx(txf Factory, msgs ...sdk.Msg) (client.TxBuilder, error) {
 	tx.SetFeeAmount(fees)
 	tx.SetGasLimit(txf.gas)
 	tx.SetTimeoutHeight(txf.TimeoutHeight())
+	tx.SetFeePayer(txf.feePayer)
+	tx.SetFeeGranter(txf.feeGranter)
 
 	return tx, nil
 }
