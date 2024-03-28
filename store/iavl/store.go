@@ -111,7 +111,10 @@ func UnsafeNewStore(tree *iavl.MutableTree) *Store {
 // Any mutable operations executed will result in a panic.
 func (st *Store) GetImmutable(version int64) (*Store, error) {
 	if !st.VersionExists(version) {
-		return nil, fmt.Errorf("version mismatch on immutable IAVL tree; version does not exist. Version has either been pruned, or is for a future block height")
+		// CONTRACT: If the version does not exist, return an empty immutable IAVL tree
+		// This is to prevent panics when querying or iterating over the store
+		/* return nil, fmt.Errorf("version mismatch on immutable IAVL tree; version does not exist. Version has either been pruned, or is for a future block height") */
+		return &Store{tree: &immutableTree{&iavl.ImmutableTree{}}}, nil
 	}
 
 	iTree, err := st.tree.GetImmutable(version)
