@@ -17,6 +17,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	gogotypes "github.com/cosmos/gogoproto/types"
 )
 
 // AccountKeeperI is the interface contract that x/auth's keeper implements.
@@ -179,14 +180,40 @@ func (ak AccountKeeper) GetSequence(ctx context.Context, addr sdk.AccAddress) (u
 	return acc.GetSequence(), nil
 }
 
+func (ak AccountKeeper) GetAccountNumberLegacy(ctx context.Context) (uint64, error) {
+	store := ak.storeService.OpenKVStore(ctx)
+	b, err := store.Get(types.LegacyGlobalAccountNumberKey)
+	if err != nil {
+		return 0, fmt.Errorf("failed to get legacy account number: %w", err)
+	}
+	v := new(gogotypes.UInt64Value)
+	if err := v.Unmarshal(b); err != nil {
+		return 0, fmt.Errorf("failed to unmarshal legacy account number: %w", err)
+	}
+	return v.Value, nil
+}
+
 // NextAccountNumber returns and increments the global account number counter.
 // If the global account number is not set, it initializes it with value 0.
 func (ak AccountKeeper) NextAccountNumber(ctx context.Context) uint64 {
-	n, err := ak.AccountNumber.Next(ctx)
-	if err != nil {
-		panic(err)
+	accNum, err := collections.Item[uint64](ak.AccountNumber).Get(ctx)
+	if err != nil && errors.Is(err, collections.ErrNotFound) {
+		// This change makes the method works in historical states.
+		// Although the behavior is not identical, but semantically compatible.
+		//
+		// For the state machine, it also does the migration lazily.
+		accNum, err = ak.GetAccountNumberLegacy(ctx)
 	}
-	return n
+
+	if err != nil {
+		return 0
+	}
+
+	if err := ak.AccountNumber.Set(ctx, accNum+1); err != nil {
+		return 0
+	}
+
+	return accNum
 }
 
 // GetModulePermissions fetches per-module account permissions.
