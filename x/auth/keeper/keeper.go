@@ -180,7 +180,7 @@ func (ak AccountKeeper) GetSequence(ctx context.Context, addr sdk.AccAddress) (u
 	return acc.GetSequence(), nil
 }
 
-func (ak AccountKeeper) GetAccountNumberLegacy(ctx context.Context) (uint64, error) {
+func (ak AccountKeeper) LegacyNextAccountNumber(ctx context.Context) (uint64, error) {
 	store := ak.storeService.OpenKVStore(ctx)
 	b, err := store.Get(types.LegacyGlobalAccountNumberKey)
 	if err != nil {
@@ -190,6 +190,10 @@ func (ak AccountKeeper) GetAccountNumberLegacy(ctx context.Context) (uint64, err
 	if err := v.Unmarshal(b); err != nil {
 		return 0, fmt.Errorf("failed to unmarshal legacy account number: %w", err)
 	}
+
+	b = ak.cdc.MustMarshal(&gogotypes.UInt64Value{Value: v.Value + 1})
+	store.Set(types.LegacyGlobalAccountNumberKey, b)
+
 	return v.Value, nil
 }
 
@@ -202,7 +206,7 @@ func (ak AccountKeeper) NextAccountNumber(ctx context.Context) uint64 {
 		// Although the behavior is not identical, but semantically compatible.
 		//
 		// For the state machine, it also does the migration lazily.
-		accNum, err = ak.GetAccountNumberLegacy(ctx)
+		accNum, err = ak.LegacyNextAccountNumber(ctx)
 	}
 
 	if err != nil {
