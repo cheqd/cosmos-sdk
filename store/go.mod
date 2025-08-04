@@ -79,4 +79,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-// replace github.com/cosmos/iavl => github.com/cheqd/iavl v1.2.2-uneven-heights
+replace github.com/cosmos/iavl => github.com/cheqd/iavl v1.2.2-uneven-heights.0.20250804100229-e641730275d7
