@@ -150,6 +150,11 @@ func (st *Store) LastCommitID() types.CommitID {
 	}
 }
 
+// LastCommitID implements Committer.
+func (st *Store) SetVersion(version int64) {
+	st.tree.SetVersion(version)
+}
+
 // SetPruning panics as pruning options should be provided at initialization
 // since IAVl accepts pruning options directly.
 func (st *Store) SetPruning(_ pruningtypes.PruningOptions) {
