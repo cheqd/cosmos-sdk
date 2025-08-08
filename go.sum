@@ -97,8 +97,8 @@ github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XL
 github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06/go.mod h1:DH46F32mSOjUmXrMHnKwZdA8wcEefY7UVqBKYGjpdQY=
 github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 h1:qSGYFH7+jGhDF8vLC+iwCD4WpbV1EBDSzWkJODFLams=
 github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311/go.mod h1:b583jCggY9gE99b6G5LEC39OIiVsWj+R97kbl5odCEk=
-github.com/cheqd/iavl v1.2.2-uneven-heights.0.20250804100229-e641730275d7 h1:3rk6jerMSxU2iNTeYAnmJvYRPfQ0NLd8QQyhBsKRcUQ=
-github.com/cheqd/iavl v1.2.2-uneven-heights.0.20250804100229-e641730275d7/go.mod h1:GiM43q0pB+uG53mLxLDzimxM9l/5N9UuSY3/D0huuVw=
+github.com/cheqd/iavl v1.2.2-uneven-heights.0.20250808065519-2c3d5a9959cc h1:ZcM7+wZRXO9WVTGT37OXy+Toz3bWQk/PZzN8eqtsilo=
+github.com/cheqd/iavl v1.2.2-uneven-heights.0.20250808065519-2c3d5a9959cc/go.mod h1:GiM43q0pB+uG53mLxLDzimxM9l/5N9UuSY3/D0huuVw=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/logex v1.2.1 h1:XHDu3E6q+gdHgsdTPH6ImJMIp436vR6MPtH8gP05QzM=
 github.com/chzyer/logex v1.2.1/go.mod h1:JLbx6lG2kDbNRFnfkgvh4eRJRPX1QCoOIWomwysCBrQ=
